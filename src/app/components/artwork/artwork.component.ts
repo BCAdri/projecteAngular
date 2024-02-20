@@ -12,6 +12,13 @@ import { ApiServiceService } from '../../services/api-service.service';
   styleUrl: './artwork.component.css',
 })
 export class ArtworkComponent implements OnInit {
+
+
+  DescriptionFull = false;
+  mouseover: boolean = false;
+  @Input() artwork!: IArtwork;
+  @Input() id?: string;
+
   constructor(
     private router: ActivatedRoute,
     private apiService: ApiServiceService,
@@ -41,15 +48,11 @@ export class ArtworkComponent implements OnInit {
     );
   }
 
-  showFullDescription = false;
-  mouseover: boolean = false;
-  @Input() artwork!: IArtwork;
-  @Input() id?: string;
   
   @Output() likeChanged = new EventEmitter<boolean>();
   
   toggleDescription() {
-    this.showFullDescription = !this.showFullDescription;
+    this.DescriptionFull = !this.DescriptionFull;
   }
   toggleLike() {
     this.likeChanged.emit(this.artwork.like);

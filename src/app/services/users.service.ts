@@ -105,6 +105,25 @@ export class UsersService implements OnInit {
     }
     return { success: true, user };
   }
+  
+
+  deleteFavorites(id_artwork: number): void {
+    let uid = localStorage.getItem('uid');
+    if (uid) {
+      let promiseDelete: Promise<{
+        data: { id: number; id_artwork: number; id_user: string }[];
+      }> = this.supaClient
+        .from('favorite')
+        .delete()
+        .eq('id_user', "" + uid)
+        .eq('id_artwork', id_artwork)
+       
+
+        promiseDelete.then((data) => {
+          this.favoritesSubject.next(data.data);
+        });
+    }
+  }
 
   getProfile(): void {
     const uid = localStorage.getItem('uid');
@@ -181,32 +200,32 @@ export class UsersService implements OnInit {
 
 
   async setFavorites(id_artwork: string): Promise<void> {
-    let uid = localStorage.getItem('uid');
-
-    let { data, error } = await this.supaClient.auth.getSession();
-    let promiseFavorites: Promise<boolean> = this.supaClient
-      .from('favorite')
-      .insert([{ id_artwork: id_artwork, id_user: uid }]);
-    await promiseFavorites;
-  }
-
- 
-
-  deleteFavorites(id_artwork: number): void {
-    let uid = localStorage.getItem('uid');
-    if (uid) {
-      let promiseDelete: Promise<{
-        data: { id: number; id_artwork: number; id_user: string }[];
-      }> = this.supaClient
+    try {
+      let uid = localStorage.getItem('uid');
+  
+      let { data, error } = await this.supaClient.auth.getSession();
+  
+      const existingEntry = await this.supaClient
         .from('favorite')
-        .delete()
-        .eq('id_user', "" + uid)
+        .select('id')
         .eq('id_artwork', id_artwork)
-       
-
-        promiseDelete.then((data) => {
-          this.favoritesSubject.next(data.data);
-        });
+        .eq('id_user', uid)
+        .single();
+        
+      if (existingEntry.status===406) {
+        let promiseFavorites: Promise<boolean> = this.supaClient
+          .from('favorite')
+          .insert([{ id_artwork: id_artwork, id_user: uid }]);
+        await promiseFavorites;
+  
+        console.log('Artwork added to favorites successfully.');
+      } else {
+        console.log('Artwork is already in favorites.');
+      }
+  
+    } catch (error) {
+      console.error('Error while adding artwork to favorites:', error);
     }
   }
+
 }

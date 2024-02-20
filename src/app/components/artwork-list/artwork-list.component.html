@@ -6,14 +6,14 @@
   <div class="pagination-container">
     <div class="pagination-controls">
       <a (click)="pag('back')">Back</a>
-      {{currentPage}} - {{totalPage}}
+      {{currentPage}} - {{totalPageCount}}
       <a (click)="pag('next')">Next</a>
     </div>
     
     <div class="pagination-search">
-      <input type="text" class="input-number" (keyup.enter)="pag('numberPage')" [(ngModel)]="numberPage" >
+      <input type="text" class="input-number" (keyup.enter)="pag('enteredPageNumber')" [(ngModel)]="enteredPageNumber" >
 
-      <input type="button" class="search-button" (click)="pag('numberPage')" value="GO" >
+      <input type="button" class="search-button" (click)="pag('enteredPageNumber')" value="GO" >
     </div>
   </div>
 

@@ -12,10 +12,10 @@
     <p class="card-text" style="font-weight: 500;">{{ artwork.place_of_origin }}</p>
 
     <p class="card-text description" *ngIf="artwork?.description">
-      <span *ngIf="!showFullDescription" [innerHTML]="artwork?.description | slice:0:200"></span>
-      <span *ngIf="showFullDescription" [innerHTML]="artwork?.description"></span>
-      <a (click)="showFullDescription = !showFullDescription" class="btn-link">
-        {{ showFullDescription ? '... Less' : '... More '}}
+      <span *ngIf="!DescriptionFull" [innerHTML]="artwork?.description | slice:0:200"></span>
+      <span *ngIf="DescriptionFull" [innerHTML]="artwork?.description"></span>
+      <a (click)="DescriptionFull = !DescriptionFull" class="btn-link">
+        {{ DescriptionFull ? '... Less' : '... More '}}
       </a>
     </p>
 

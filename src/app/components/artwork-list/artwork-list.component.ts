@@ -21,36 +21,34 @@ import { ArtworkFilterPipe } from '../../pipes/artwork-filter.pipe';
 })
 export class ArtworkListComponent {
 
-  url: string = `https://api.artic.edu/api/v1/artworks`;
+  
+  apiEndpoint: string = `https://api.artic.edu/api/v1/artworks`;
 
-  SearchActive: boolean = false;
+  search: boolean = false;
 
-
-  filter: string = '';
+  searchFilter: string = '';
   art: IArtwork[] = [];
-  mouseover: boolean = false;
+  isMouseOver: boolean = false;
 
   currentPage: number = 1;
-  totalPage!: number;
-  numberPage!: number;
-
-
+  totalPageCount!: number;
+  enteredPageNumber!: number;
 
   constructor(
     private usersService: UsersService,
     private artService: ApiServiceService,
     private filterService: FilterService,
-    private router: ActivatedRoute,
+    private route: ActivatedRoute,
   ) {
-    this.SearchActive = false;
+    this.search = false;
   }
 
   ngOnInit(): void {
 
-    this.setSearch();
-    this.updateTotalPage();
+    this.initializeSearch();
+    this.updateTotalPages();
 
-    if (!this.SearchActive) {
+    if (!this.search) {
       this.artService.getArtWorks().subscribe((artworkList: IArtwork[]) => {
         this.art = artworkList;
       });
@@ -58,37 +56,37 @@ export class ArtworkListComponent {
       this.filterService.searchFilter
         .pipe(debounceTime(500))
         .subscribe((filter) => {
-          console.log('Filtro:', filter);
+          console.log('Filter:', filter);
           this.artService
             .filterArtWorks(filter)
             .subscribe((artworkList: IArtwork[]) => {
               this.art = artworkList;
             });
         });
-      this.filterService.searchFilter.next(this.filter); 
+      this.filterService.searchFilter.next(this.searchFilter); 
     }
   }
 
-  updateTotalPage(): void {
-    let urlSearch = this.SearchActive
-      ? `${this.url}/search?q=${this.filter}`
-      : this.url;
-    this.artService.getArtWorksAll(urlSearch).subscribe((totalPages) => {
-      this.totalPage = totalPages;
-      if (this.SearchActive)
-        this.totalPage = this.totalPage >= 100 ? 100 : this.totalPage;
+  updateTotalPages(): void {
+    let searchUrl = this.search
+      ? `${this.apiEndpoint}/search?q=${this.searchFilter}`
+      : this.apiEndpoint;
+    this.artService.getArtWorksAll(searchUrl).subscribe((totalPages) => {
+      this.totalPageCount = totalPages;
+      if (this.search)
+        this.totalPageCount = this.totalPageCount >= 100 ? 100 : this.totalPageCount;
       this.currentPage = 1; 
     });
   }
 
-  setSearch(): void {
-    this.router.paramMap.subscribe((params) => {
-      const seachFilter = params.get('search');
-      if (seachFilter) {
-        this.filter = seachFilter; 
-        this.SearchActive = true; 
-        this.updateTotalPage(); 
-        this.filterService.searchFilter.next(this.filter); 
+  initializeSearch(): void {
+    this.route.paramMap.subscribe((params) => {
+      const searchFilter = params.get('search');
+      if (searchFilter) {
+        this.searchFilter = searchFilter; 
+        this.search = true; 
+        this.updateTotalPages(); 
+        this.filterService.searchFilter.next(this.searchFilter); 
       }
     });
   }
@@ -106,29 +104,28 @@ export class ArtworkListComponent {
   pag(param: string) {
     switch (param) {
 
-      case 'numberPage':
-        if (this.numberPage <= this.totalPage && this.numberPage >= 1)
-          this.currentPage = this.numberPage;
+      case 'enteredPageNumber':
+        if (this.enteredPageNumber <= this.totalPageCount && this.enteredPageNumber >= 1)
+          this.currentPage = this.enteredPageNumber;
         break;
 
       case 'next':
-        if (this.currentPage < this.totalPage) this.currentPage++;
+        if (this.currentPage < this.totalPageCount) this.currentPage++;
         break;
 
       case 'back':
         if (this.currentPage != 1) this.currentPage--;
         break;
 
-    
     }
-    let urlSearch = this.SearchActive
-      ? `${this.url}/search?q=${this.filter}&fields=id,description,title,image_id&page=${this.currentPage}`
-      : `${this.url}?page=${this.currentPage}`;
+    let pageUrl = this.search
+      ? `${this.apiEndpoint}/search?q=${this.searchFilter}&fields=id,description,title,image_id&page=${this.currentPage}`
+      : `${this.apiEndpoint}?page=${this.currentPage}`;
 
-    console.log(urlSearch);
+    console.log(pageUrl);
 
     this.artService
-      .getArtWorksPage(urlSearch)
+      .getArtWorksPage(pageUrl)
       .subscribe((artworkList: IArtwork[]) => {
         this.art = artworkList;
         window.scrollTo(0, 0);
@@ -136,9 +133,6 @@ export class ArtworkListComponent {
   }
 
 }
-
-
-
 
 
 
