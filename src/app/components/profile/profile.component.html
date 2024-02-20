@@ -1,0 +1,47 @@
+<div #divPopUp></div>
+
+<div class="container">
+    <div class="recuadro text-center text-lg-start">
+        <h1 class="form-title">Profile</h1>
+
+        <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+
+            <div class="mb-3">
+                <input formControlName="username" type="text" class="form-control" placeholder="Username"
+                    [ngClass]="{ 'is-invalid': !formulario.get('username')?.valid && formulario.get('username')?.touched, 'is-valid': formulario.get('username')?.valid }" />
+            </div>
+
+            <div class="mb-3">
+                <input formControlName="full_name" type="text" class="form-control" placeholder="Nombre completo"
+                    [ngClass]="{ 'is-invalid': !formulario.get('full_name')?.valid && formulario.get('full_name')?.touched, 'is-valid': formulario.get('full_name')?.valid}" />
+            </div>
+
+            <label for="basic-url" class="form-label"><b>WebSite</b></label>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">https://example.com/artworks</span>
+                <input formControlName="website" type="text" class="form-control" id="basic-url"
+                    aria-describedby="basic-addon3" name="website" />
+            </div>
+
+            <div class="avatar-container">
+                <img class="avatar_profile" [src]="formulario.get('avatar_url')!.value || 'assets/img/icons/profile.jpeg'"
+                    alt="Avatar" />
+            </div>
+
+            <label for="avatar" class="form-label"><b>Avatar</b></label>
+
+            <div class="input-group mb-3">
+                <input type="file" class="form-control" id="avatar" (change)="loadImg($event)">
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary" [disabled]="!formulario.valid">Actualizar</button>
+            </div>
+
+            <div style="margin-top: 15px;text-align: center;">
+                <div *ngIf="!formulario.valid" class="text-danger">Modificaciones no válidas</div>
+            </div>
+        </form>
+    </div>
+</div>

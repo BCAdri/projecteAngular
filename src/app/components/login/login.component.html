@@ -1,0 +1,27 @@
+<div class="custom-login-wrap">
+    <div class="custom-flex-container">
+        <div class="custom-full-width">
+            <h3 class="custom-heading">Sign In</h3>
+        </div>
+    </div>
+    <form class="custom-signin-form">
+        <div class="custom-form-group">
+            <label class="custom-label" for="email">Email</label>
+            <input type="email" [(ngModel)]="email" name="email" class="custom-form-control"
+                placeholder="Email address" required>
+            <div *ngIf="error" class="custom-form-error">{{ error }}</div>
+        </div>
+        <div class="custom-form-group">
+            <label class="custom-label" for="password">Password</label>
+            <input type="password" [(ngModel)]="password" name="password" class="custom-form-control"
+                placeholder="Password" required>
+            <div *ngIf="error" class="custom-form-error">{{ error }}</div>
+        </div>
+        <div class="custom-form-group">
+            <button (click)="login()" type="submit" class="custom-btn-submit">
+                Sign in
+            </button>
+        </div>
+    </form>
+    <p class="custom-text-center">Don't have account? <a [routerLink]="['register']">Register</a></p>
+</div>

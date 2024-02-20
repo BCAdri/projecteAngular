@@ -1,0 +1,26 @@
+.container {
+    width: 50%;
+}
+
+.recuadro {
+    padding: 20px;
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.avatar-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.avatar_profile {
+    max-width: 150px;
+}
+
+.e-toast-container .e-toast .e-toast-message .e-toast-title {
+    color: red;
+    font-size: 18px;
+    font-weight: bold;
+}

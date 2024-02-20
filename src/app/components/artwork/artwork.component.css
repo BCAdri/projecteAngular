@@ -1,0 +1,97 @@
+.artwork-card {
+    display: flex;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    padding: 10px;
+  }
+  
+  .image-container img {
+    max-width: 100%;
+    height: auto;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .image-container img:hover {
+    transform: scale(1.1);
+  }
+  
+  .card-details {
+    margin-left: 10px;
+  }
+  
+  .card-title {
+    font-size: 18px;
+    margin-top: 0;
+  }
+  
+  .card-text {
+    white-space: pre-line;
+  }
+  
+  .description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .buttons {
+    margin-top: 10px;
+  }
+  
+  .details-button {
+    margin-right: 10px;
+  }
+  
+  .heart-icon {
+    cursor: pointer;
+    display: inline-block;
+    font-size: 20px;
+    margin-top: 5px;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .heart-icon:hover {
+    color: red;
+  }
+  .detailed-card {
+    display: flex;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    padding: 10px;
+  }
+  
+  .detailed-card .image-container img {
+    max-width: 100%;
+    height: auto;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .detailed-card .image-container img:hover {
+    transform: scale(1.1);
+  }
+  
+  .detailed-card .card-details {
+    margin-left: 10px;
+  }
+  
+  .detailed-card .card-title {
+    font-size: 18px;
+    margin-top: 0;
+  }
+  
+  .detailed-card .card-text {
+    white-space: pre-line;
+  }
+  
+  .detailed-card .heart-icon {
+    cursor: pointer;
+    display: inline-block;
+    font-size: 20px;
+    margin-top: 5px;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .detailed-card .heart-icon:hover {
+    color: red;
+  }
+
+ 

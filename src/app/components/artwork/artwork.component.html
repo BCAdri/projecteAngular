@@ -1,0 +1,53 @@
+
+<div class="artwork-card" *ngIf="!id; else detailedView">
+  <div class="image-container">
+    <img src="https://www.artic.edu/iiif/2/{{ artwork?.image_id }}/full/843,/0/default.jpg" alt="Artwork Image" />
+  </div>
+
+  <div class="card-details">
+    <h5 class="card-title" [ngStyle]="{'color': artwork.date_start < 1900 ? 'black' : 'green'}">
+      {{ artwork.title }} {{ artwork.fiscal_year }}
+    </h5>
+
+    <p class="card-text" style="font-weight: 500;">{{ artwork.place_of_origin }}</p>
+
+    <p class="card-text description" *ngIf="artwork?.description">
+      <span *ngIf="!showFullDescription" [innerHTML]="artwork?.description | slice:0:200"></span>
+      <span *ngIf="showFullDescription" [innerHTML]="artwork?.description"></span>
+      <a (click)="showFullDescription = !showFullDescription" class="btn-link">
+        {{ showFullDescription ? '... Less' : '... More '}}
+      </a>
+    </p>
+
+    <div class="buttons">
+      <a [routerLink]="['/artwork',artwork?.id]" class="details-button btn btn-primary">Detalles</a>
+      <div class="heart-icon" (mouseover)="mouseover = true" (mouseleave)="mouseover = false" (click)="toggleLike()">
+        <div *ngIf="artwork?.like">♥</div>
+        <div *ngIf="!artwork?.like">♡</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #detailedView>
+<div class="detailed-card">
+  <div class="image-container">
+    <img src="https://www.artic.edu/iiif/2/{{ artwork?.image_id }}/full/843,/0/default.jpg" alt="Artwork Image" />
+  </div>
+
+  <div class="card-details">
+    <h5 class="card-title" [ngStyle]="{'color': artwork.date_start < 1900 ? 'black' : 'green'}">
+      {{ artwork.title }} {{ artwork.fiscal_year }}
+    </h5>
+    <p class="card-text">{{ artwork.artist_display }}</p>
+    <p class="card-text" [innerHTML]="artwork?.description"></p>
+    
+    <div class="heart-icon" (mouseover)="mouseover = true" (mouseleave)="mouseover = false" (click)="toggleLike()">
+      <div *ngIf="artwork?.like">♥</div>
+      <div *ngIf="!artwork?.like">♡</div>
+    </div>
+  </div>
+</div>
+</ng-template>
+

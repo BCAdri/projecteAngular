@@ -1,0 +1,44 @@
+<style>
+    .container {
+        padding: 20px;
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+
+    .table td, .table th {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .table th {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<div #divPopUp></div>
+
+<div class="container">
+
+        <h1>Favorites List</h1>
+        <table class="table">
+            <tbody>
+                <ng-container *ngFor="let quadre of quadresFav">
+                    <tr app-artwork-row [artwork]="quadre"></tr>
+                    <button style="background-color: red;" (click)="delete(quadre)">Delete</button>
+                </ng-container>
+            </tbody>
+        </table>
+</div>

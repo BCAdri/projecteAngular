@@ -1,0 +1,28 @@
+<div #divPopUp></div>
+
+<div class="artworks-list-container">
+  <h1>Artworks List</h1>
+  
+  <div class="pagination-container">
+    <div class="pagination-controls">
+      <a (click)="pag('back')">Back</a>
+      {{currentPage}} - {{totalPage}}
+      <a (click)="pag('next')">Next</a>
+    </div>
+    
+    <div class="pagination-search">
+      <input type="text" class="input-number" (keyup.enter)="pag('numberPage')" [(ngModel)]="numberPage" >
+
+      <input type="button" class="search-button" (click)="pag('numberPage')" value="GO" >
+    </div>
+  </div>
+
+  <div class="artworks-container">
+    <div class="row">
+      <div class="col" *ngFor="let quadre of art">
+        <app-artwork [artwork]="quadre" (likeChanged)="toggleLike($event, quadre)"></app-artwork>
+      </div>
+    </div>
+  </div>
+</div>
+

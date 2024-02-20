@@ -1,0 +1,35 @@
+<div class="custom-signup-wrap">
+    <div class="custom-flex-container">
+        <div class="custom-full-width">
+            <h3 class="custom-heading">Sign Up</h3>
+        </div>
+    </div>
+    <form class="custom-signup-form">
+        <div class="custom-form-group">
+            <label class="custom-label" for="firstName">First name</label>
+            <input type="text" class="custom-form-control" placeholder="First name" required>
+        </div>
+        <div class="custom-form-group">
+            <label class="custom-label" for="lastName">Last name</label>
+            <input type="text" class="custom-form-control" placeholder="Last name" required>
+        </div>
+        <div class="custom-form-group">
+            <label class="custom-label" for="email">Email address</label>
+            <input type="email" [(ngModel)]="email" name="email" class="custom-form-control"
+                placeholder="Email address" required>
+            <div *ngIf="error" class="custom-form-error">{{ error }}</div>
+        </div>
+        <div class="custom-form-group">
+            <label class="custom-label" for="password">Password</label>
+            <input type="password" [(ngModel)]="password" name="password" class="custom-form-control"
+                placeholder="Password" required>
+            <div *ngIf="error" class="custom-form-error">{{ error }}</div>
+        </div>
+        <div class="custom-form-group">
+            <button (click)="register()" type="submit" class="custom-btn-submit">
+                Sign up
+            </button>
+        </div>
+    </form>
+    <p class="custom-text-center">Do you have account? <a [routerLink]="['login']">Sign in</a></p>
+</div>
