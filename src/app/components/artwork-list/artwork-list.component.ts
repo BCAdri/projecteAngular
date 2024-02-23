@@ -20,19 +20,15 @@ import { ArtworkFilterPipe } from '../../pipes/artwork-filter.pipe';
   styleUrl: './artwork-list.component.css',
 })
 export class ArtworkListComponent {
+ enteredPageNumber!: number;
+  isMouseOver: boolean = false;
 
-  
   apiEndpoint: string = `https://api.artic.edu/api/v1/artworks`;
 
-  search: boolean = false;
-
-  searchFilter: string = '';
   art: IArtwork[] = [];
-  isMouseOver: boolean = false;
 
   currentPage: number = 1;
   totalPageCount!: number;
-  enteredPageNumber!: number;
 
   constructor(
     private usersService: UsersService,
@@ -53,30 +49,12 @@ export class ArtworkListComponent {
         this.art = artworkList;
       });
     } else {
-      this.filterService.searchFilter
-        .pipe(debounceTime(500))
-        .subscribe((filter) => {
-          console.log('Filter:', filter);
-          this.artService
-            .filterArtWorks(filter)
-            .subscribe((artworkList: IArtwork[]) => {
-              this.art = artworkList;
-            });
-        });
+      this.filterService.searchFilter.pipe(debounceTime(300)).subscribe((filter) => {console.log('Filter:', filter);
+      this.artService.filterArtWorks(filter).subscribe((artworkList: IArtwork[]) => {
+      this.art = artworkList;});
+      });
       this.filterService.searchFilter.next(this.searchFilter); 
     }
-  }
-
-  updateTotalPages(): void {
-    let searchUrl = this.search
-      ? `${this.apiEndpoint}/search?q=${this.searchFilter}`
-      : this.apiEndpoint;
-    this.artService.getArtWorksAll(searchUrl).subscribe((totalPages) => {
-      this.totalPageCount = totalPages;
-      if (this.search)
-        this.totalPageCount = this.totalPageCount >= 100 ? 100 : this.totalPageCount;
-      this.currentPage = 1; 
-    });
   }
 
   initializeSearch(): void {
@@ -90,8 +68,37 @@ export class ArtworkListComponent {
       }
     });
   }
+  search: boolean = false;
 
-  async toggleLike($event: boolean, artwork: IArtwork) {
+  pag(param: string) {
+    switch (param) {
+
+              case 'enteredPageNumber':
+                if (this.enteredPageNumber <= this.totalPageCount && this.enteredPageNumber >= 1)
+                  this.currentPage = this.enteredPageNumber;
+                break;
+        
+              case 'next':
+                if (this.currentPage < this.totalPageCount) this.currentPage++;
+                break;
+        
+              case 'back':
+                if (this.currentPage != 1) this.currentPage--;
+                break;
+
+    }
+    let pageUrl = this.search
+          ? `${this.apiEndpoint}/search?q=${this.searchFilter}&fields=id,description,title,image_id&page=${this.currentPage}`
+          : `${this.apiEndpoint}?page=${this.currentPage}`;
+
+
+    this.artService.getArtWorksPage(pageUrl).subscribe((artworkList: IArtwork[]) => {
+    this.art = artworkList;
+        window.scrollTo(0, 0);
+      });
+  }
+  searchFilter: string = '';
+ async toggleLike($event: boolean, artwork: IArtwork) {
     this.usersService.isLogged().then((logged) => {
       if (!logged){ 
     } else {
@@ -100,38 +107,18 @@ export class ArtworkListComponent {
       }
     });
   }
-
-  pag(param: string) {
-    switch (param) {
-
-      case 'enteredPageNumber':
-        if (this.enteredPageNumber <= this.totalPageCount && this.enteredPageNumber >= 1)
-          this.currentPage = this.enteredPageNumber;
-        break;
-
-      case 'next':
-        if (this.currentPage < this.totalPageCount) this.currentPage++;
-        break;
-
-      case 'back':
-        if (this.currentPage != 1) this.currentPage--;
-        break;
-
-    }
-    let pageUrl = this.search
-      ? `${this.apiEndpoint}/search?q=${this.searchFilter}&fields=id,description,title,image_id&page=${this.currentPage}`
-      : `${this.apiEndpoint}?page=${this.currentPage}`;
-
-    console.log(pageUrl);
-
-    this.artService
-      .getArtWorksPage(pageUrl)
-      .subscribe((artworkList: IArtwork[]) => {
-        this.art = artworkList;
-        window.scrollTo(0, 0);
-      });
+  
+   updateTotalPages(): void {
+    let searchUrl = this.search
+            ? `${this.apiEndpoint}/search?q=${this.searchFilter}`
+            : this.apiEndpoint;
+    this.artService.getArtWorksAll(searchUrl).subscribe((totalPages) => {
+            this.totalPageCount = totalPages;
+      if (this.search)
+              this.totalPageCount = this.totalPageCount >= 100 ? 100 : this.totalPageCount;
+              this.currentPage = 1; 
+    });
   }
-
 }
 
 
