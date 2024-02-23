@@ -5,12 +5,12 @@
 
         <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
 
-            <div class="mb-3">
+            <div>
                 <input formControlName="username" type="text" class="form-control" placeholder="Username"
                     [ngClass]="{ 'is-invalid': !formulario.get('username')?.valid && formulario.get('username')?.touched, 'is-valid': formulario.get('username')?.valid }" />
             </div>
 
-            <div class="mb-3">
+            <div>
                 <input formControlName="full_name" type="text" class="form-control" placeholder="Nombre completo"
                     [ngClass]="{ 'is-invalid': !formulario.get('full_name')?.valid && formulario.get('full_name')?.touched, 'is-valid': formulario.get('full_name')?.valid}" />
             </div>
@@ -30,7 +30,7 @@
 
             <label for="avatar" class="form-label"><b>Avatar</b></label>
 
-            <div class="input-group mb-3">
+            <div class="input-group">
                 <input type="file" class="form-control" id="avatar" (change)="loadImg($event)">
             </div>
 
